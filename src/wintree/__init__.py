@@ -41,7 +41,7 @@ def tree_to_json(root_dir: str = ".", save_path: str = "", ignore_dirs: List[str
     """
     __root_validation(root_dir)
     if not save_path:
-        save_path = f"{root_dir.rstrip(os.sep)}_tree.json"
+        save_path = f"{os.path.dirname(os.path.abspath(root_dir))}_tree.json"
     elif not save_path.endswith('.json'):
         raise ValueError("Save path must end with '.json'.")
 

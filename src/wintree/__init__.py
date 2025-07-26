@@ -200,9 +200,9 @@ def __root_validation(root_dir):
         raise ValueError(f"Root path '{root_dir}' is not a directory.")
 
 
-if __name__ == "__main__":
-    print(tree(ignore_dirs=[".git", "__pycache__", "dist"]))
-    print("\n" + "-"*40 + "\n")
-    print(list_files(ignore_dirs=[".git", "__pycache__", "dist"]))
-    print("\n" + "-"*40 + "\n")
-    print(tree_to_json(save_path="tree.json", ignore_dirs=[".git", "__pycache__", "dist"], show_meta=True))
+# if __name__ == "__main__":
+#     print(tree(ignore_dirs=[".git", "__pycache__", "dist"]))
+#     print("\n" + "-"*40 + "\n")
+#     print(list_files(ignore_dirs=[".git", "__pycache__", "dist"]))
+#     print("\n" + "-"*40 + "\n")
+#     print(tree_to_json(save_path="tree.json", ignore_dirs=[".git", "__pycache__", "dist"], show_meta=True))

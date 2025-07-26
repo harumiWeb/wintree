@@ -8,7 +8,7 @@ authors = [
 readme = "README.md"
 license = "MIT"
 repository = "https://github.com/harumiWeb/wintree"
-requires-python = ">=3.12"
+requires-python = ">=3.12,<4.0"
 dependencies = [
 ]
 
@@ -21,6 +21,8 @@ wintree = "wintree.cli:main"
 
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"
+pytest-mock = "^3.14.1"
+taskipy = "^1.14.1"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]

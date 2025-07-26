@@ -12,6 +12,22 @@ import wintree
 wintree.print_tree()
 ```
 
+```bash
+# sample output
+📂 root: .
+├── 📄 .gitignore
+├── 📄 README.md
+├── 📄 pyproject.toml
+├── 📁 src/
+│   ├── 📁 assets/
+│   │   ├── 📄 icon.png
+│   │   └── 📄 splash_android.png
+│   └── 📄 main.py
+└── 📁 storage/
+    ├── 📁 data/
+    └── 📁 temp/
+```
+
 引数の指定
 
 ```py

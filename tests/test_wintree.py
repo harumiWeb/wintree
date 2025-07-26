@@ -138,7 +138,7 @@ class TestTreeToJsonFunction:
         # 戻り値は dict
         assert isinstance(res1, dict)
         # デフォルトの JSON ファイルが作成される
-        default_path = Path(str(os.path.dirname(os.path.abspath(src))) + "_tree.json")
+        default_path = Path(src / f"{src.name}_tree.json")
         assert default_path.exists()
         data_on_disk = json.loads(default_path.read_text(encoding="utf-8"))
         assert data_on_disk == res1

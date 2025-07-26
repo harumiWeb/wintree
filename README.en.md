@@ -1,6 +1,9 @@
 # 📁🌳 wintree
 
-`wintree` is a Python library that displays the hierarchical structure of a specified directory in a tree format. It can be easily used from the command line, supports visually appealing tree views with emojis, and allows you to specify directories to exclude.
+This library was born out of the limitations of the default Windows tree command.
+`wintree` is a Python library that displays the directory structure in a tree format for any specified path.
+It can be easily used from the command line and supports features like emoji-based visual tree rendering and directory exclusion.
+Additionally, it can output the tree structure as JSON, making it suitable for integration with GUI applications.
 
 ## 🚀 Usage
 
@@ -69,12 +72,14 @@ wintree /path/to/project --exclude .git __pycache__
 
 #### Options
 
-| Option     | Description                                                         |
-| ---------- | ------------------------------------------------------------------- |
-| path       | Path to the root directory                                          |
-| --no-emoji | Disable emoji display                                               |
-| --exclude  | Specify directory names to exclude (partial match, space-separated) |
-| --ext      | File extensions to include                                          |
+| Option        | Description                                                         |
+| ------------- | ------------------------------------------------------------------- |
+| path          | Path to the root directory                                          |
+| --no-emoji    | Disable emoji display                                               |
+| --exclude     | Specify directory names to exclude (partial match, space-separated) |
+| --ext         | File extensions to include                                          |
+| --no-tree     | List absolute paths instead of a tree structure                     |
+| --json-output | Path to save the file hierarchy in                                  |
 
 ## 📌 Features
 

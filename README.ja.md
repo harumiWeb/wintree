@@ -31,7 +31,7 @@ print(wintree.tree())
 引数の指定
 
 ```py
-from wintree import print_tree
+from wintree import tree
 
 print(tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__pycache__"]))
 ```

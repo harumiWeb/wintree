@@ -1,4 +1,5 @@
 import os
+import datetime
 from typing import List
 
 
@@ -10,6 +11,7 @@ def tree(root_dir: str = ".", use_emoji: bool = True, ignore_dirs: List[str] = [
         root_dir (str, optional): Path to the root directory to display. Defaults to "." (current directory).
         use_emoji (bool, optional): If True, display emojis for folders and files. Defaults to True.
         ignore_dirs (List[str], optional): List of directory names (partial match) to exclude from the tree. Defaults to [].
+        filter_exts (List[str], optional): List of file extensions to include. If empty, all files are included.
 
     Example:
         ```
@@ -21,17 +23,20 @@ def tree(root_dir: str = ".", use_emoji: bool = True, ignore_dirs: List[str] = [
     tree = __make_tree(root_dir, use_emoji=use_emoji, exclude_dirs=ignore_dirs, filter_exts=filter_exts)
     return f"{root_str}\n{tree}" if tree else f"{root_str}\n(No files or directories found)"
 
-def tree_to_json(root_dir: str = ".", save_path: str = "", ignore_dirs: List[str] = [], filter_exts: List[str] = []):
+def tree_to_json(root_dir: str = ".", save_path: str = "", ignore_dirs: List[str] = [], filter_exts: List[str] = [], show_meta: bool = False):
     """
     Generate a JSON representation of the directory structure.
 
     Args:
         root_dir (str, optional): Path to the root directory to display. Defaults to "." (current directory).
+        save_path (str, optional): Path to save the JSON file. If not provided, defaults to "<root_dir>_tree.json".
+        filter_exts (List[str], optional): List of file extensions to include. If empty, all files are included.
         ignore_dirs (List[str], optional): List of directory names (partial match) to exclude from the tree. Defaults to [].
+        show_meta (bool, optional): If True, include file size and last modified time in the JSON output. Defaults to False.
 
     Example:
         ```
-        print(tree_json(root_dir="/path/to/project", ignore_dirs=[".git", "__pycache__"]))
+        tree_to_json(root_dir="/path/to/project", ignore_dirs=[".git", "__pycache__"])
         ```
     """
     __root_validation(root_dir)
@@ -45,8 +50,8 @@ def tree_to_json(root_dir: str = ".", save_path: str = "", ignore_dirs: List[str
     
     import json
     with open(save_path, 'w', encoding='utf-8') as f:
-        json.dump(__make_tree_json(root_dir, exclude_dirs=ignore_dirs, filter_exts=filter_exts), f, ensure_ascii=False, indent=4)
-    return __make_tree_json(root_dir, exclude_dirs=ignore_dirs, filter_exts=filter_exts)
+        json.dump(__make_tree_json(root_dir, exclude_dirs=ignore_dirs, exclude_files=[os.path.basename(save_path)], filter_exts=filter_exts, show_meta=show_meta), f, ensure_ascii=False, indent=4)
+    return __make_tree_json(root_dir, exclude_dirs=ignore_dirs,exclude_files=[os.path.basename(save_path)], filter_exts=filter_exts, show_meta=show_meta)
 
 def list_files(root_dir: str = ".", ignore_dirs: List[str] = [], filter_exts: List[str] = []):
     """
@@ -55,6 +60,7 @@ def list_files(root_dir: str = ".", ignore_dirs: List[str] = [], filter_exts: Li
     Args:
         root_dir (str, optional): Path to the root directory to search. Defaults to "." (current directory).
         ignore_dirs (List[str], optional): List of directory names (partial match) to exclude from the search. Defaults to [].
+        filter_exts (List[str], optional): List of file extensions to include. If empty, all files are included.
 
     Example:
         ```
@@ -129,9 +135,7 @@ def __list_files_recursive(current_dir, exclude_dirs=None, filter_exts=None):
     return output_str
 
 
-import os
-
-def __make_tree_json(current_dir, exclude_dirs=None, filter_exts=None):
+def __make_tree_json(current_dir, exclude_dirs=None, exclude_files=None, filter_exts=None, show_meta=False):
     output_dict = {
         "name": os.path.basename(current_dir),
         "type": "directory",
@@ -140,6 +144,8 @@ def __make_tree_json(current_dir, exclude_dirs=None, filter_exts=None):
 
     if exclude_dirs is None:
         exclude_dirs = []
+    if exclude_files is None:
+        exclude_files = []
     if filter_exts is None:
         filter_exts = []
 
@@ -154,8 +160,11 @@ def __make_tree_json(current_dir, exclude_dirs=None, filter_exts=None):
         if any(ex in full_path for ex in exclude_dirs):
             continue
 
+        if entry in exclude_files:
+            continue
+
         if os.path.isdir(full_path):
-            child = __make_tree_json(full_path, exclude_dirs, filter_exts)
+            child = __make_tree_json(full_path, exclude_dirs,exclude_files, filter_exts, show_meta)
             if child:
                 output_dict["children"].append(child)
         else:
@@ -167,9 +176,21 @@ def __make_tree_json(current_dir, exclude_dirs=None, filter_exts=None):
                 "name": entry,
                 "type": "file"
             }
+
+            if show_meta:
+                try:
+                    size = os.path.getsize(full_path)
+                    mtime = os.path.getmtime(full_path)
+                    timestamp = datetime.datetime.fromtimestamp(mtime).strftime("%Y-%m-%d %H:%M:%S")
+                    file_dict["size"] = size
+                    file_dict["updated"] = timestamp
+                except OSError:
+                    pass
+
             output_dict["children"].append(file_dict)
 
     return output_dict
+
 
 
 def __root_validation(root_dir):
@@ -184,4 +205,4 @@ if __name__ == "__main__":
     print("\n" + "-"*40 + "\n")
     print(list_files(ignore_dirs=[".git", "__pycache__", "dist"]))
     print("\n" + "-"*40 + "\n")
-    print(tree_to_json(save_path="tree.json", ignore_dirs=[".git", "__pycache__", "dist"]))
+    print(tree_to_json(save_path="tree.json", ignore_dirs=[".git", "__pycache__", "dist"], show_meta=True))

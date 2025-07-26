@@ -6,6 +6,7 @@ authors = [
     {name = "harumiWeb",email = "ganaharumi@outlook.jp"}
 ]
 readme = "README.md"
+license = "MIT"
 repository = "https://github.com/harumiWeb/wintree"
 requires-python = ">=3.12"
 dependencies = [

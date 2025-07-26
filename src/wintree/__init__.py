@@ -16,9 +16,37 @@ def tree(root_dir: str = ".", use_emoji: bool = True, ignore_dirs: List[str] = [
         print_tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__pycache__"])
         ```
     """
+    __root_validation(root_dir)
     root_str = f"{'📂 ' if use_emoji else ''}root: {root_dir}"
     tree = __make_tree(root_dir, use_emoji=use_emoji, exclude_dirs=ignore_dirs, filter_exts=filter_exts)
     return f"{root_str}\n{tree}" if tree else f"{root_str}\n(No files or directories found)"
+
+def tree_to_json(root_dir: str = ".", save_path: str = "", ignore_dirs: List[str] = [], filter_exts: List[str] = []):
+    """
+    Generate a JSON representation of the directory structure.
+
+    Args:
+        root_dir (str, optional): Path to the root directory to display. Defaults to "." (current directory).
+        ignore_dirs (List[str], optional): List of directory names (partial match) to exclude from the tree. Defaults to [].
+
+    Example:
+        ```
+        print(tree_json(root_dir="/path/to/project", ignore_dirs=[".git", "__pycache__"]))
+        ```
+    """
+    __root_validation(root_dir)
+    if not save_path:
+        save_path = f"{root_dir.rstrip(os.sep)}_tree.json"
+    elif not save_path.endswith('.json'):
+        raise ValueError("Save path must end with '.json'.")
+    
+    if not os.path.exists(os.path.dirname(os.path.abspath(save_path))):
+        os.makedirs(os.path.dirname(os.path.abspath(save_path)), exist_ok=True)
+    
+    import json
+    with open(save_path, 'w', encoding='utf-8') as f:
+        json.dump(__make_tree_json(root_dir, exclude_dirs=ignore_dirs, filter_exts=filter_exts), f, ensure_ascii=False, indent=4)
+    return __make_tree_json(root_dir, exclude_dirs=ignore_dirs, filter_exts=filter_exts)
 
 def list_files(root_dir: str = ".", ignore_dirs: List[str] = [], filter_exts: List[str] = []):
     """
@@ -33,6 +61,7 @@ def list_files(root_dir: str = ".", ignore_dirs: List[str] = [], filter_exts: Li
         print(list_files(root_dir="/path/to/project", ignore_dirs=[".git", "__pycache__"]))
         ```
     """
+    __root_validation(root_dir)
     return __list_files_recursive(root_dir, ignore_dirs, filter_exts)
 
 def __make_tree(current_dir, prefix="", use_emoji=True, exclude_dirs=None, filter_exts=None):
@@ -100,7 +129,59 @@ def __list_files_recursive(current_dir, exclude_dirs=None, filter_exts=None):
     return output_str
 
 
+import os
+
+def __make_tree_json(current_dir, exclude_dirs=None, filter_exts=None):
+    output_dict = {
+        "name": os.path.basename(current_dir),
+        "type": "directory",
+        "children": []
+    }
+
+    if exclude_dirs is None:
+        exclude_dirs = []
+    if filter_exts is None:
+        filter_exts = []
+
+    try:
+        entries = os.listdir(current_dir)
+    except PermissionError:
+        return None
+
+    for entry in entries:
+        full_path = os.path.join(current_dir, entry)
+
+        if any(ex in full_path for ex in exclude_dirs):
+            continue
+
+        if os.path.isdir(full_path):
+            child = __make_tree_json(full_path, exclude_dirs, filter_exts)
+            if child:
+                output_dict["children"].append(child)
+        else:
+            _, ext = os.path.splitext(entry)
+            if filter_exts and ext.lower() not in [e.lower() for e in filter_exts]:
+                continue
+
+            file_dict = {
+                "name": entry,
+                "type": "file"
+            }
+            output_dict["children"].append(file_dict)
+
+    return output_dict
+
+
+def __root_validation(root_dir):
+    if not os.path.exists(root_dir):
+        raise ValueError(f"Root directory '{root_dir}' does not exist.")
+    if not os.path.isdir(root_dir):
+        raise ValueError(f"Root path '{root_dir}' is not a directory.")
+
+
 if __name__ == "__main__":
-    print(tree(ignore_dirs=[".git", "__pycache__"]))
+    print(tree(ignore_dirs=[".git", "__pycache__", "dist"]))
     print("\n" + "-"*40 + "\n")
-    print(list_files(ignore_dirs=[".git", "__pycache__"]))
+    print(list_files(ignore_dirs=[".git", "__pycache__", "dist"]))
+    print("\n" + "-"*40 + "\n")
+    print(tree_to_json(save_path="tree.json", ignore_dirs=[".git", "__pycache__", "dist"]))

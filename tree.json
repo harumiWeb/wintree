@@ -1,0 +1,64 @@
+{
+    "name": ".",
+    "type": "directory",
+    "children": [
+        {
+            "name": "LICENSE",
+            "type": "file"
+        },
+        {
+            "name": "poetry.lock",
+            "type": "file"
+        },
+        {
+            "name": "pyproject.toml",
+            "type": "file"
+        },
+        {
+            "name": "README.en.md",
+            "type": "file"
+        },
+        {
+            "name": "README.ja.md",
+            "type": "file"
+        },
+        {
+            "name": "README.md",
+            "type": "file"
+        },
+        {
+            "name": "src",
+            "type": "directory",
+            "children": [
+                {
+                    "name": "wintree",
+                    "type": "directory",
+                    "children": [
+                        {
+                            "name": "cli.py",
+                            "type": "file"
+                        },
+                        {
+                            "name": "__init__.py",
+                            "type": "file"
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "name": "tests",
+            "type": "directory",
+            "children": [
+                {
+                    "name": "__init__.py",
+                    "type": "file"
+                }
+            ]
+        },
+        {
+            "name": "tree.json",
+            "type": "file"
+        }
+    ]
+}

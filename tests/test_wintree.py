@@ -1,4 +1,5 @@
 import json
+import os
 import pytest
 from pathlib import Path
 import sys
@@ -137,7 +138,7 @@ class TestTreeToJsonFunction:
         # 戻り値は dict
         assert isinstance(res1, dict)
         # デフォルトの JSON ファイルが作成される
-        default_path = Path(str(src) + "_tree.json")
+        default_path = Path(str(os.path.dirname(os.path.abspath(src))) + "_tree.json")
         assert default_path.exists()
         data_on_disk = json.loads(default_path.read_text(encoding="utf-8"))
         assert data_on_disk == res1
@@ -156,7 +157,7 @@ class TestTreeToJsonFunction:
         loaded = json.loads(custom.read_text(encoding="utf-8"))
         assert loaded == res2
         # show_meta=True なのでファイル辞書に size, updated が含まれる
-        file_nodes = [c for c in res2["children"] if c["type"] == "file"]
+        file_nodes = [c for c in res2["children"] if c["type"] == "file"] # type: ignore
         assert file_nodes and "size" in file_nodes[0] and "updated" in file_nodes[0]
 
     def test_tree_to_json_exclude_dirs_and_filter_exts(self, tmp_path):
@@ -177,7 +178,7 @@ class TestTreeToJsonFunction:
             filter_exts=[".py"]
         )
         # drop 以下は無視
-        names = {c["name"] for c in res["children"]}
+        names = {c["name"] for c in res["children"]} # type: ignore
         assert "drop" not in names
         # .py のみ
         assert "ok.py" in names

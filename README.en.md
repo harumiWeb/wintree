@@ -33,7 +33,7 @@ With arguments:
 ```py
 from wintree import tree
 
-print(tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__pycache__"]))
+print(tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__pycache__"])))
 ```
 
 | Argument    | Type      | Description                                                                                         |
@@ -41,6 +41,7 @@ print(tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__
 | root_dir    | str       | Path to the root directory to start displaying the tree. Default is the current directory "."       |
 | use_emoji   | bool      | Whether to use emojis in the tree view. If True, adds icons to folders and files.                   |
 | ignore_dirs | List[str] | List of directory names to exclude from the tree (partial match). Example: [".git", "node_modules"] |
+| filter_ext  | List[str] | File extensions to include. Example: [".py", "txt"]                                                 |
 
 You can also list absolute paths instead of
 

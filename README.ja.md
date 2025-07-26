@@ -41,6 +41,7 @@ print(tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__
 | root_dir    | str       | ツリー表示を開始するルートディレクトリのパス。デフォルトはカレントディレクトリ "."。      |
 | use_emoji   | bool      | ツリー表示に絵文字を使用するかどうか。True にするとフォルダーやファイルにアイコンを付加。 |
 | ignore_dirs | List[str] | ツリー表示から除外するディレクトリ名のリスト（部分一致）。例：[".git", "node_modules"]。  |
+| filter_ext  | List[str] | 検出したいファイルの拡張子。例：[".py", ".txt"]。                                         |
 
 ツリー形状ではなく絶対パスを列挙することもできます。
 

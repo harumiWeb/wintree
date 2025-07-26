@@ -43,6 +43,16 @@ print(tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__
 | ignore_dirs | List[str] | List of directory names to exclude from the tree (partial match). Example: [".git", "node_modules"] |
 | filter_ext  | List[str] | File extensions to include. Example: [".py", "txt"]                                                 |
 
+Get or save as JSON
+
+```py
+# Get as a dictionary
+data = wintree.tree_to_dict(show_meta=True)
+
+# Save as a JSON file
+wintree.tree_to_json(root_dir="path/to/project",
+```
+
 You can also list absolute paths instead of
 
 ```py
@@ -80,8 +90,3 @@ This library can also be used as a base for directory visualization tools. Integ
 ## 📄 License
 
 MIT License
-
-# 🌐 Language
-
-- [English](./README.en.md)
-- [日本語](./README.ja.md)

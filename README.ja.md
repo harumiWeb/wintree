@@ -1,6 +1,7 @@
 # 📁🌳 wintree
 
 `wintree` は、指定したディレクトリの階層構造をツリー形式で表示する Python ライブラリです。コマンドラインから簡単に使用でき、絵文字による視覚的なツリー表示や除外対象のディレクトリ指定も可能です。
+ツリー構造をJSONファイルに出力することでGUIアプリケーションにも活用できます。
 
 ## 🚀 使い方
 
@@ -42,6 +43,16 @@ print(tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__
 | use_emoji   | bool      | ツリー表示に絵文字を使用するかどうか。True にするとフォルダーやファイルにアイコンを付加。 |
 | ignore_dirs | List[str] | ツリー表示から除外するディレクトリ名のリスト（部分一致）。例：[".git", "node_modules"]。  |
 | filter_ext  | List[str] | 検出したいファイルの拡張子。例：[".py", ".txt"]。                                         |
+
+JSON形式で取得or保存
+
+```py
+# 辞書データを取得
+data = wintree.tree_to_dict(show_meta=True)
+
+# JSONファイルで保存
+wintree.tree_to_json(root_dir="path/to/project" ,save_path="path/to/project_tree.json")
+```
 
 ツリー形状ではなく絶対パスを列挙することもできます。
 

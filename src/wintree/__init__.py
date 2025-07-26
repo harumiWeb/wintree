@@ -53,6 +53,23 @@ def tree_to_json(root_dir: str = ".", save_path: str = "", ignore_dirs: List[str
         json.dump(__make_tree_json(root_dir, exclude_dirs=ignore_dirs, exclude_files=[os.path.basename(save_path)], filter_exts=filter_exts, show_meta=show_meta), f, ensure_ascii=False, indent=4)
     return __make_tree_json(root_dir, exclude_dirs=ignore_dirs,exclude_files=[os.path.basename(save_path)], filter_exts=filter_exts, show_meta=show_meta)
 
+def tree_to_dict(root_dir: str = ".", ignore_dirs: List[str] = [], filter_exts: List[str] = [], show_meta: bool = False):
+    """
+    Generate a dictionary representation of the directory structure.
+
+    Args:
+        root_dir (str, optional): Path to the root directory to display. Defaults to "." (current directory).
+        ignore_dirs (List[str], optional): List of directory names (partial match) to exclude from the tree. Defaults to [].
+        filter_exts (List[str], optional): List of file extensions to include. If empty, all files are included.
+
+    Example:
+        ```
+        tree_to_dict(root_dir="/path/to/project", ignore_dirs=[".git", "__pycache__"])
+        ```
+    """
+    __root_validation(root_dir)
+    return __make_tree_json(root_dir, exclude_dirs=ignore_dirs, filter_exts=filter_exts, show_meta=show_meta)
+
 def list_files(root_dir: str = ".", ignore_dirs: List[str] = [], filter_exts: List[str] = []):
     """
     Recursively list all files under the specified directory, excluding specified directories.
@@ -198,11 +215,3 @@ def __root_validation(root_dir):
         raise ValueError(f"Root directory '{root_dir}' does not exist.")
     if not os.path.isdir(root_dir):
         raise ValueError(f"Root path '{root_dir}' is not a directory.")
-
-
-# if __name__ == "__main__":
-#     print(tree(ignore_dirs=[".git", "__pycache__", "dist"]))
-#     print("\n" + "-"*40 + "\n")
-#     print(list_files(ignore_dirs=[".git", "__pycache__", "dist"]))
-#     print("\n" + "-"*40 + "\n")
-#     print(tree_to_json(save_path="tree.json", ignore_dirs=[".git", "__pycache__", "dist"], show_meta=True))

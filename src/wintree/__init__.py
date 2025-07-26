@@ -44,10 +44,10 @@ def tree_to_json(root_dir: str = ".", save_path: str = "", ignore_dirs: List[str
         save_path = f"{root_dir.rstrip(os.sep)}_tree.json"
     elif not save_path.endswith('.json'):
         raise ValueError("Save path must end with '.json'.")
-    
+
     if not os.path.exists(os.path.dirname(os.path.abspath(save_path))):
         os.makedirs(os.path.dirname(os.path.abspath(save_path)), exist_ok=True)
-    
+
     import json
     with open(save_path, 'w', encoding='utf-8') as f:
         json.dump(__make_tree_json(root_dir, exclude_dirs=ignore_dirs, exclude_files=[os.path.basename(save_path)], filter_exts=filter_exts, show_meta=show_meta), f, ensure_ascii=False, indent=4)

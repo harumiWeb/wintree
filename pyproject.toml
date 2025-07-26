@@ -18,12 +18,24 @@ packages = [{include = "wintree", from = "src"}]
 [tool.poetry.scripts]
 wintree = "wintree.cli:main"
 
-
 [tool.poetry.group.dev.dependencies]
 pytest = "^8.4.1"
 pytest-mock = "^3.14.1"
 taskipy = "^1.14.1"
+pytest-clarity = "^1.0.1"
+pytest-cov = "^6.2.1"
 
 [build-system]
 requires = ["poetry-core>=2.0.0,<3.0.0"]
 build-backend = "poetry.core.masonry.api"
+
+[tool.pytest.ini_options]
+addopts = "--strict-markers --strict-config"
+testpaths = ["tests"]
+filterwarnings = [
+    "ignore::DeprecationWarning",
+    "ignore::PendingDeprecationWarning",
+]
+
+[tool.taskipy.tasks]
+test = "pytest --cov=wintree --cov-report=term-missing --cov-report=html"

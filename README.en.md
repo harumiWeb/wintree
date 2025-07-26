@@ -67,7 +67,7 @@ python -m wintree.cli /path/to/project --exclude .git __pycache__
 
 This library can also be used as a base for directory visualization tools. Integration with GUI tools or IDE plugins is also possible.
 
-## 📄
+## 📄 License
 
 MIT License
 

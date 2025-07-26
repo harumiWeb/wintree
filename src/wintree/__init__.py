@@ -32,7 +32,6 @@ def list_files(root_dir: str = ".", ignore_dirs: List[str] = []):
         list_files(root_dir="/path/to/project", ignore_dirs=[".git", "__pycache__"])
         ```
     """
-    print(f"🔍 Listing files in: {os.path.abspath(root_dir)}")
     __list_files_recursive(root_dir, ignore_dirs)
 
 def __make_tree(current_dir, prefix="", use_emoji=True, exclude_dirs=None):

@@ -50,7 +50,7 @@ Get or save as JSON
 data = wintree.tree_to_dict(show_meta=True)
 
 # Save as a JSON file
-wintree.tree_to_json(root_dir="path/to/project",
+wintree.tree_to_json(root_dir="path/to/project" ,save_path="path/to/project_tree.json")
 ```
 
 You can also list absolute paths instead of

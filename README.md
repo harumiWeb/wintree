@@ -33,7 +33,7 @@ With arguments:
 ```py
 from wintree import tree
 
-print(tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__pycache__"]))
+print(tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__pycache__"], filter_exts=[".py",".txt"]))
 ```
 
 | Argument    | Type      | Description                                                                                         |
@@ -64,6 +64,7 @@ wintree /path/to/project --exclude .git __pycache__
 | path       | Path to the root directory                                          |
 | --no-emoji | Disable emoji display                                               |
 | --exclude  | Specify directory names to exclude (partial match, space-separated) |
+| --ext      | File extensions to include                                          |
 
 ## 📌 Features
 

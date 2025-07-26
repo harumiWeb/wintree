@@ -33,7 +33,7 @@ print(wintree.tree())
 ```py
 from wintree import tree
 
-print(tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__pycache__"]))
+print(tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__pycache__"], filter_exts=[".py",".txt"]))
 ```
 
 | 引数名      | 型        | 説明                                                                                      |
@@ -64,6 +64,7 @@ wintree /path/to/project --exclude .git __pycache__
 | path       | ルートディレクトリのパス                                 |
 | --no-emoji | 絵文字を非表示にする                                     |
 | --exclude  | 除外するディレクトリ名（部分一致）をスペース区切りで指定 |
+| --ext      | 検出したいファイル拡張子                                 |
 
 ## 📌 特長
 

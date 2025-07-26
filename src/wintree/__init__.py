@@ -2,7 +2,7 @@ import os
 from typing import List
 
 
-def print_tree(root_dir: str = ".", use_emoji: bool = True, ignore_dirs: List[str] = []):
+def tree(root_dir: str = ".", use_emoji: bool = True, ignore_dirs: List[str] = []):
     """
     Display the directory structure as a tree.
 
@@ -16,8 +16,9 @@ def print_tree(root_dir: str = ".", use_emoji: bool = True, ignore_dirs: List[st
         print_tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__pycache__"])
         ```
     """
-    print(f"{'📂 ' if use_emoji else ''}root: {root_dir}")
-    __make_tree(root_dir, use_emoji=use_emoji, exclude_dirs=ignore_dirs)
+    root_str = f"{'📂 ' if use_emoji else ''}root: {root_dir}"
+    tree = __make_tree(root_dir, use_emoji=use_emoji, exclude_dirs=ignore_dirs)
+    return f"{root_str}\n{tree}" if tree else f"{root_str}\n(No files or directories found)"
 
 def list_files(root_dir: str = ".", ignore_dirs: List[str] = []):
     """
@@ -29,19 +30,21 @@ def list_files(root_dir: str = ".", ignore_dirs: List[str] = []):
 
     Example:
         ```
-        list_files(root_dir="/path/to/project", ignore_dirs=[".git", "__pycache__"])
+        print(list_files(root_dir="/path/to/project", ignore_dirs=[".git", "__pycache__"]))
         ```
     """
-    __list_files_recursive(root_dir, ignore_dirs)
+    return __list_files_recursive(root_dir, ignore_dirs)
 
 def __make_tree(current_dir, prefix="", use_emoji=True, exclude_dirs=None):
+    output_str = ""
+
     if exclude_dirs is None:
         exclude_dirs = []
 
     try:
         entries = sorted(os.listdir(current_dir))
     except PermissionError:
-        return
+        return ""
 
     entries = [e for e in entries if not any(ex in os.path.join(current_dir, e) for ex in exclude_dirs)]
 
@@ -52,13 +55,17 @@ def __make_tree(current_dir, prefix="", use_emoji=True, exclude_dirs=None):
         icon_file = "📄 " if use_emoji else ""
 
         if os.path.isdir(full_path):
-            print(f"{prefix}{connector}{icon_folder}{entry}/")
+            output_str += f"{prefix}{connector}{icon_folder}{entry}/\n"
             extension = "    " if idx == len(entries) - 1 else "│   "
-            __make_tree(full_path, prefix + extension, use_emoji, exclude_dirs)
+            output_str += __make_tree(full_path, prefix + extension, use_emoji, exclude_dirs)
         else:
-            print(f"{prefix}{connector}{icon_file}{entry}")
+            output_str += f"{prefix}{connector}{icon_file}{entry}\n"
+
+    return output_str
 
 def __list_files_recursive(current_dir, exclude_dirs=None):
+    output_str = ""
+
     if exclude_dirs is None:
         exclude_dirs = []
 
@@ -74,12 +81,15 @@ def __list_files_recursive(current_dir, exclude_dirs=None):
             continue
 
         if os.path.isdir(full_path):
-            __list_files_recursive(full_path, exclude_dirs)
+            child = __list_files_recursive(full_path, exclude_dirs)
+            output_str += child if child else ""
         else:
-            print(os.path.abspath(full_path))
+            output_str += (os.path.abspath(full_path) + "\n")
+
+    return output_str
 
 
 if __name__ == "__main__":
-    print_tree(ignore_dirs=[".git", "__pycache__"])
+    print(tree(ignore_dirs=[".git", "__pycache__"]))
     print("\n" + "-"*40 + "\n")
-    list_files(ignore_dirs=[".git", "__pycache__"])
+    print(list_files(ignore_dirs=[".git", "__pycache__"]))

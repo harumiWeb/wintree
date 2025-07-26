@@ -9,7 +9,7 @@
 ```py
 import wintree
 
-wintree.print_tree()
+print(wintree.tree())
 ```
 
 ```bash
@@ -31,9 +31,9 @@ wintree.print_tree()
 With arguments:
 
 ```py
-from wintree import print_tree
+from wintree import tree
 
-print_tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__pycache__"])
+print(tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__pycache__"]))
 ```
 
 | Argument    | Type      | Description                                                                                         |
@@ -42,10 +42,18 @@ print_tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__
 | use_emoji   | bool      | Whether to use emojis in the tree view. If True, adds icons to folders and files.                   |
 | ignore_dirs | List[str] | List of directory names to exclude from the tree (partial match). Example: [".git", "node_modules"] |
 
+You can also list absolute paths instead of
+
+```py
+import wintree
+
+print(wintree.list_files())
+```
+
 ### ⚙️ Usage from CLI
 
 ```bash
-python -m wintree.cli /path/to/project --exclude .git __pycache__
+wintree /path/to/project --exclude .git __pycache__
 ```
 
 #### Options

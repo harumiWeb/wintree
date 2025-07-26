@@ -9,7 +9,7 @@
 ```py
 import wintree
 
-wintree.print_tree()
+print(wintree.tree())
 ```
 
 ```bash
@@ -33,7 +33,7 @@ wintree.print_tree()
 ```py
 from wintree import print_tree
 
-print_tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__pycache__"])
+print(tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__pycache__"]))
 ```
 
 | 引数名      | 型        | 説明                                                                                      |
@@ -42,10 +42,18 @@ print_tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__
 | use_emoji   | bool      | ツリー表示に絵文字を使用するかどうか。True にするとフォルダーやファイルにアイコンを付加。 |
 | ignore_dirs | List[str] | ツリー表示から除外するディレクトリ名のリスト（部分一致）。例：[".git", "node_modules"]。  |
 
+ツリー形状ではなく絶対パスを列挙することもできます。
+
+```py
+import wintree
+
+print(wintree.list_files())
+```
+
 ### ⚙️ CLI (コマンドライン) から使用
 
 ```bash
-python -m wintree.cli /path/to/project --exclude .git __pycache__
+wintree /path/to/project --exclude .git __pycache__
 ```
 
 #### オプション一覧

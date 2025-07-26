@@ -1,5 +1,5 @@
 import argparse
-from . import print_tree, list_files
+from . import tree, list_files
 
 def main():
     parser = argparse.ArgumentParser(description="A tool to display directory trees or file listings")
@@ -11,9 +11,9 @@ def main():
     args = parser.parse_args()
 
     if args.no_tree:
-        list_files(args.path, ignore_dirs=args.exclude)
+        print(list_files(args.path, ignore_dirs=args.exclude))
     else:
-        print_tree(args.path, use_emoji=not args.no_emoji, ignore_dirs=args.exclude)
+        print(tree(args.path, use_emoji=not args.no_emoji, ignore_dirs=args.exclude))
 
 if __name__ == "__main__":
     main()

@@ -3,14 +3,16 @@ name = "wintree"
 version = "0.1.8"
 description = "A lightweight Python library and CLI tool for displaying visually structured directory trees with optional emoji and exclusion filters."
 authors = [
-    {name = "harumiWeb",email = "ganaharumi@outlook.jp"}
+    {name = "harumiWeb"}
 ]
 readme = "README.md"
 license = "MIT"
-repository = "https://github.com/harumiWeb/wintree"
 requires-python = ">=3.12,<4.0"
 dependencies = [
 ]
+
+[project.urls]
+Repository = "https://github.com/harumiWeb/wintree"
 
 [tool.poetry]
 packages = [{include = "wintree", from = "src"}]

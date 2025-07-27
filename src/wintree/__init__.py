@@ -294,7 +294,3 @@ def __root_validation(root_dir):
         raise ValueError(f"Root directory '{root_dir}' does not exist.")
     if not os.path.isdir(root_dir):
         raise ValueError(f"Root path '{root_dir}' is not a directory.")
-
-
-if __name__ == "__main__":
-    print(list_files())

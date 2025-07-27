@@ -5,6 +5,12 @@ This library was born out of the limitations of the default Windows tree command
 It can be easily used from the command line and supports features like emoji-based visual tree rendering and directory exclusion.
 Additionally, it can output the tree structure as JSON, making it suitable for integration with GUI applications.
 
+## 🔋 Install
+
+```bash
+pip install wintree
+```
+
 ## 🚀 Usage
 
 ### 📚️ As a Library

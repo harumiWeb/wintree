@@ -3,6 +3,7 @@ import os
 import pytest
 from pathlib import Path
 import sys
+
 sys.path.insert(0, "src")
 
 import wintree
@@ -32,9 +33,7 @@ class TestTreeFunction:
         structure = {
             "a.txt": "hello",
             "b.py": "print('hi')",
-            "sub": {
-                "c.md": "markdown"
-            }
+            "sub": {"c.md": "markdown"},
         }
         create_structure(tmp_path, structure)
 
@@ -61,9 +60,7 @@ class TestTreeFunction:
         create_structure(tmp_path, structure)
 
         out = wintree.tree(
-            str(tmp_path),
-            ignore_dirs=["__pycache__"],
-            filter_exts=[".txt"]
+            str(tmp_path), ignore_dirs=["__pycache__"], filter_exts=[".txt"]
         )
         # __pycache__ 以下は無視
         assert "__pycache__" not in out
@@ -85,18 +82,31 @@ class TestTreeFunction:
 
 
 class TestListFilesFunction:
-    def test_list_files_basic(self, tmp_path):
+    def test_list_files_basic_absolute(self, tmp_path):
         structure = {
             "a.txt": "1",
             "sub": {"b.py": "2"},
         }
         create_structure(tmp_path, structure)
 
-        out = wintree.list_files(str(tmp_path))
+        out = wintree.list_files(str(tmp_path), absolute_paths=True)
         lines = out.strip().splitlines()
         # Windows の絶対パス（バックスラッシュ）で返ってくる
         assert str(tmp_path / "a.txt") in lines
         assert str(tmp_path / "sub" / "b.py") in lines
+
+    def test_list_files_basic_relative(self, tmp_path):
+        structure = {
+            "a.txt": "1",
+            "sub": {"b.py": "2"},
+        }
+        create_structure(tmp_path, structure)
+
+        out = wintree.list_files(str(tmp_path), absolute_paths=False)
+        lines = out.strip().splitlines()
+        # 相対パスで返ってくる
+        assert "a.txt" in lines
+        assert "sub\\b.py" in lines
 
     def test_list_files_ignore_dirs_and_filter_exts(self, tmp_path):
         structure = {
@@ -107,9 +117,7 @@ class TestListFilesFunction:
         create_structure(tmp_path, structure)
 
         out = wintree.list_files(
-            str(tmp_path),
-            ignore_dirs=["drop"],
-            filter_exts=[".txt"]
+            str(tmp_path), ignore_dirs=["drop"], filter_exts=[".txt"]
         )
         lines = out.strip().splitlines()
         # drop.log は無視、.txt のみ
@@ -150,22 +158,18 @@ class TestTreeToJsonFunction:
             save_path=str(custom),
             ignore_dirs=[],
             filter_exts=[],
-            show_meta=True
+            show_meta=True,
         )
         # JSON ファイル作成と読み込み
         assert custom.exists()
         loaded = json.loads(custom.read_text(encoding="utf-8"))
         assert loaded == res2
         # show_meta=True なのでファイル辞書に size, updated が含まれる
-        file_nodes = [c for c in res2["children"] if c["type"] == "file"] # type: ignore
+        file_nodes = [c for c in res2["children"] if c["type"] == "file"]  # type: ignore
         assert file_nodes and "size" in file_nodes[0] and "updated" in file_nodes[0]
 
     def test_tree_to_json_exclude_dirs_and_filter_exts(self, tmp_path):
-        structure = {
-            "ok.py": "",
-            "no.md": "",
-            "drop": {"x.txt": ""}
-        }
+        structure = {"ok.py": "", "no.md": "", "drop": {"x.txt": ""}}
         base = tmp_path / "base"
         base.mkdir()
         create_structure(base, structure)
@@ -175,10 +179,10 @@ class TestTreeToJsonFunction:
             str(base),
             save_path=str(out_json),
             ignore_dirs=["drop"],
-            filter_exts=[".py"]
+            filter_exts=[".py"],
         )
         # drop 以下は無視
-        names = {c["name"] for c in res["children"]} # type: ignore
+        names = {c["name"] for c in res["children"]}  # type: ignore
         assert "drop" not in names
         # .py のみ
         assert "ok.py" in names

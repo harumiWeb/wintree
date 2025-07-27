@@ -8,7 +8,9 @@ def main():
     parser.add_argument("--exclude", nargs="*", default=[], help="Names of directories to exclude (partial match)")
     parser.add_argument("--ext", nargs="*", default=[], help="File extensions to filter (e.g., .py, .txt)")
     parser.add_argument("--no-tree", action="store_true", help="Print file paths only (no tree view)")
+    parser.add_argument("--abs", action="store_true", help="Use absolute paths for file listing")
     parser.add_argument("--json-output", help="Path to save JSON file. If specified, saves tree to JSON.")
+    parser.add_argument("--show-meta", action="store_true", help="Include metadata in JSON output")
 
     args = parser.parse_args()
 
@@ -18,11 +20,11 @@ def main():
             save_path=args.json_output,
             ignore_dirs=args.exclude,
             filter_exts=args.ext,
-            show_meta=True
+            show_meta=args.show_meta
         )
         print(f"✅ JSON saved to {args.json_output}")
     elif args.no_tree:
-        print(list_files(args.path, ignore_dirs=args.exclude, filter_exts=args.ext))
+        print(list_files(args.path, ignore_dirs=args.exclude, filter_exts=args.ext, absolute_paths=args.abs))
     else:
         print(tree(args.path, use_emoji=not args.no_emoji, ignore_dirs=args.exclude, filter_exts=args.ext))
 

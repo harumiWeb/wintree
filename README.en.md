@@ -56,7 +56,7 @@ data = wintree.tree_to_dict(show_meta=True)
 wintree.tree_to_json(root_dir="path/to/project" ,save_path="path/to/project_tree.json")
 ```
 
-You can also list absolute paths instead of
+You can also list file paths vertically as relative or absolute paths from the root directory, instead of using a tree structure.
 
 ```py
 import wintree
@@ -79,7 +79,9 @@ wintree /path/to/project --exclude .git __pycache__
 | --exclude     | Specify directory names to exclude (partial match, space-separated) |
 | --ext         | File extensions to include                                          |
 | --no-tree     | List absolute paths instead of a tree structure                     |
+| --abs         | Output absolute file paths                                          |
 | --json-output | Path to save the file hierarchy in                                  |
+| --show-meta   | Include timestamp and file size in JSON output                      |
 
 ## 📌 Features
 

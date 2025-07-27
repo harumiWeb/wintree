@@ -55,7 +55,7 @@ data = wintree.tree_to_dict(show_meta=True)
 wintree.tree_to_json(root_dir="path/to/project" ,save_path="path/to/project_tree.json")
 ```
 
-ツリー形状ではなく絶対パスを列挙することもできます。
+ツリー形状ではなくルートからの相対パスや絶対パスを縦に列挙することもできます。
 
 ```py
 import wintree
@@ -77,8 +77,10 @@ wintree /path/to/project --exclude .git __pycache__
 | --no-emoji    | 絵文字を非表示にする                                     |
 | --exclude     | 除外するディレクトリ名（部分一致）をスペース区切りで指定 |
 | --ext         | 検出したいファイル拡張子                                 |
-| --no-tree     | 絶対パスを列挙する                                       |
+| --no-tree     | ツリー状ではなく純粋なファイルパスを列挙する             |
+| --abs         | ファイルパスの列挙を絶対パスにする                       |
 | --json-output | JSON 形式でファイルの階層構造を保存するパス              |
+| --show-meta   | JSON 出力時に日時やファイルサイズの情報も取得するか      |
 
 ## 📌 特長
 

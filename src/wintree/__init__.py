@@ -60,10 +60,10 @@ def tree_cli(
     tree = __print_tree(
         root_dir, use_emoji=use_emoji, exclude_dirs=ignore_dirs, filter_exts=filter_exts
     )
-    if tree == "Permission denied":
-        print(tree)
-        return
-    elif tree == "No files or directories found":
+    # if tree == "Permission denied":
+    #     print(tree)
+    #     return
+    if tree == "No files or directories found":
         print("No files or directories found")
 
 
@@ -397,4 +397,4 @@ def __root_validation(root_dir):
         raise ValueError(f"Root path '{root_dir}' is not a directory.")
 
 if __name__ == "__main__":
-    tree_cli(ignore_dirs=[".git", "__pycache__"])
+    tree_cli()

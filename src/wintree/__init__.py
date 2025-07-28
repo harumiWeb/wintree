@@ -155,6 +155,15 @@ def __make_tree(
 
     try:
         entries = sorted(os.listdir(current_dir))
+        entries = sorted(
+            entries,
+            key=lambda e: (
+                not os.path.isdir(
+                    os.path.join(current_dir, e)
+                ),
+                e.lower(),
+            ),
+        )
     except PermissionError:
         return ""
 
@@ -196,7 +205,16 @@ def __list_files_recursive(
         filter_exts = []
 
     try:
-        entries = os.listdir(current_dir)
+        entries = sorted(os.listdir(current_dir))
+        entries = sorted(
+            entries,
+            key=lambda e: (
+                not os.path.isdir(
+                    os.path.join(current_dir, e)
+                ),
+                e.lower(),
+            ),
+        )
     except PermissionError:
         return
 
@@ -246,7 +264,16 @@ def __make_tree_json(
         filter_exts = []
 
     try:
-        entries = os.listdir(current_dir)
+        entries = sorted(os.listdir(current_dir))
+        entries = sorted(
+            entries,
+            key=lambda e: (
+                not os.path.isdir(
+                    os.path.join(current_dir, e)
+                ),
+                e.lower(),
+            ),
+        )
     except PermissionError:
         return None
 
@@ -294,3 +321,6 @@ def __root_validation(root_dir):
         raise ValueError(f"Root directory '{root_dir}' does not exist.")
     if not os.path.isdir(root_dir):
         raise ValueError(f"Root path '{root_dir}' is not a directory.")
+
+if __name__ == "__main__":
+    print(tree(ignore_dirs=[".git", "__pycache__"]))

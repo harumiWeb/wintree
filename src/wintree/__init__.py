@@ -20,12 +20,44 @@ def tree(
 
     Example:
         ```
-        print_tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__pycache__"])
+        print(tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__pycache__"]))
         ```
     """
     __root_validation(root_dir)
     root_str = f"{'📂 ' if use_emoji else ''}root: {root_dir}"
     tree = __make_tree(
+        root_dir, use_emoji=use_emoji, exclude_dirs=ignore_dirs, filter_exts=filter_exts
+    )
+    return (
+        f"{root_str}\n{tree}"
+        if tree
+        else f"{root_str}\n(No files or directories found)"
+    )
+
+
+def tree_cli(
+    root_dir: str = ".",
+    use_emoji: bool = True,
+    ignore_dirs: List[str] = [],
+    filter_exts: List[str] = [],
+):
+    """
+    Display the directory structure as a tree.
+
+    Args:
+        root_dir (str, optional): Path to the root directory to display. Defaults to "." (current directory).
+        use_emoji (bool, optional): If True, display emojis for folders and files. Defaults to True.
+        ignore_dirs (List[str], optional): List of directory names (partial match) to exclude from the tree. Defaults to [].
+        filter_exts (List[str], optional): List of file extensions to include. If empty, all files are included.
+
+    Example:
+        ```
+        print(tree(root_dir="/path/to/project", use_emoji=True, ignore_dirs=[".git", "__pycache__"]))
+        ```
+    """
+    __root_validation(root_dir)
+    root_str = f"{'📂 ' if use_emoji else ''}root: {root_dir}"
+    tree = __print_tree(
         root_dir, use_emoji=use_emoji, exclude_dirs=ignore_dirs, filter_exts=filter_exts
     )
     return (
@@ -158,9 +190,7 @@ def __make_tree(
         entries = sorted(
             entries,
             key=lambda e: (
-                not os.path.isdir(
-                    os.path.join(current_dir, e)
-                ),
+                not os.path.isdir(os.path.join(current_dir, e)),
                 e.lower(),
             ),
         )
@@ -194,6 +224,51 @@ def __make_tree(
     return output_str
 
 
+def __print_tree(
+    current_dir, prefix="", use_emoji=True, exclude_dirs=None, filter_exts=None
+):
+    if exclude_dirs is None:
+        exclude_dirs = []
+    if filter_exts is None:
+        filter_exts = []
+
+    try:
+        entries = sorted(os.listdir(current_dir))
+        entries = sorted(
+            entries,
+            key=lambda e: (
+                not os.path.isdir(os.path.join(current_dir, e)),
+                e.lower(),
+            ),
+        )
+    except PermissionError:
+        return ""
+
+    entries = [
+        e
+        for e in entries
+        if not any(ex in os.path.join(current_dir, e) for ex in exclude_dirs)
+    ]
+
+    for idx, entry in enumerate(entries):
+        full_path = os.path.join(current_dir, entry)
+        connector = "└── " if idx == len(entries) - 1 else "├── "
+        icon_folder = "📁 " if use_emoji else ""
+        icon_file = "📄 " if use_emoji else ""
+
+        if os.path.isdir(full_path):
+            print(f"{prefix}{connector}{icon_folder}{entry}/")
+            extension = "    " if idx == len(entries) - 1 else "│   "
+            __print_tree(
+                full_path, prefix + extension, use_emoji, exclude_dirs, filter_exts
+            )
+        else:
+            _, ext = os.path.splitext(entry)
+            if filter_exts and ext.lower() not in [e.lower() for e in filter_exts]:
+                continue
+            print(f"{prefix}{connector}{icon_file}{entry}")
+
+
 def __list_files_recursive(
     current_dir, root_dir, exclude_dirs=None, filter_exts=None, absolute_paths=False
 ):
@@ -209,9 +284,7 @@ def __list_files_recursive(
         entries = sorted(
             entries,
             key=lambda e: (
-                not os.path.isdir(
-                    os.path.join(current_dir, e)
-                ),
+                not os.path.isdir(os.path.join(current_dir, e)),
                 e.lower(),
             ),
         )
@@ -268,9 +341,7 @@ def __make_tree_json(
         entries = sorted(
             entries,
             key=lambda e: (
-                not os.path.isdir(
-                    os.path.join(current_dir, e)
-                ),
+                not os.path.isdir(os.path.join(current_dir, e)),
                 e.lower(),
             ),
         )
@@ -323,4 +394,4 @@ def __root_validation(root_dir):
         raise ValueError(f"Root path '{root_dir}' is not a directory.")
 
 if __name__ == "__main__":
-    print(tree(ignore_dirs=[".git", "__pycache__"]))
+    tree_cli(ignore_dirs=[".git", "__pycache__"])

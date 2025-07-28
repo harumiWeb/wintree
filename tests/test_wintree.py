@@ -42,13 +42,13 @@ class TestTreeFunction:
         # root ヘッダ
         assert out.splitlines()[0].startswith("📂 root:")
         # サブディレクトリとファイルが描画されている
-        assert "└── 📁 sub/" in out
+        assert "├── 📁 sub/" in out
         assert "└── 📄 c.md" in out
 
         # 絵文字なし
         out_no_emoji = wintree.tree(str(tmp_path), use_emoji=False)
         assert "root:" in out_no_emoji
-        assert "└── sub/" in out_no_emoji
+        assert "├── sub/" in out_no_emoji
         assert "└── c.md" in out_no_emoji
 
     def test_tree_ignore_dirs_and_filter_exts(self, tmp_path):

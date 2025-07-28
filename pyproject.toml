@@ -1,6 +1,6 @@
 [project]
 name = "wintree"
-version = "0.1.13"
+version = "0.1.14"
 description = "A lightweight Python library and CLI tool for displaying visually structured directory trees with optional emoji and exclusion filters."
 authors = [
     {name = "harumiWeb"}

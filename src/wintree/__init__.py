@@ -56,15 +56,15 @@ def tree_cli(
         ```
     """
     __root_validation(root_dir)
-    root_str = f"{'📂 ' if use_emoji else ''}root: {root_dir}"
+    print(f"{'📂 ' if use_emoji else ''}root: {root_dir}")
     tree = __print_tree(
         root_dir, use_emoji=use_emoji, exclude_dirs=ignore_dirs, filter_exts=filter_exts
     )
-    return (
-        f"{root_str}\n{tree}"
-        if tree
-        else f"{root_str}\n(No files or directories found)"
-    )
+    if tree == "Permission denied":
+        print(tree)
+        return
+    elif tree == "No files or directories found":
+        print("No files or directories found")
 
 
 def tree_to_json(
@@ -242,7 +242,10 @@ def __print_tree(
             ),
         )
     except PermissionError:
-        return ""
+        return "Permission denied"
+    
+    if not entries:
+        return "No files or directories found"
 
     entries = [
         e

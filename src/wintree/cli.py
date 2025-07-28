@@ -26,7 +26,7 @@ def main():
     elif args.no_tree:
         print(list_files(args.path, ignore_dirs=args.exclude, filter_exts=args.ext, absolute_paths=args.abs))
     else:
-        print(tree_cli(args.path, use_emoji=not args.no_emoji, ignore_dirs=args.exclude, filter_exts=args.ext))
+        tree_cli(args.path, use_emoji=not args.no_emoji, ignore_dirs=args.exclude, filter_exts=args.ext)
 
 if __name__ == "__main__":
     main()

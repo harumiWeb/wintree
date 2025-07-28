@@ -60,9 +60,9 @@ def tree_cli(
     tree = __print_tree(
         root_dir, use_emoji=use_emoji, exclude_dirs=ignore_dirs, filter_exts=filter_exts
     )
-    # if tree == "Permission denied":
-    #     print(tree)
-    #     return
+    if tree == "Permission denied":
+        print(tree)
+        return
     if tree == "No files or directories found":
         print("No files or directories found")
 

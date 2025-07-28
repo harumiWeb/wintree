@@ -40,7 +40,7 @@ filterwarnings = [
 ]
 
 [tool.taskipy.tasks]
-test = "pytest --cov=wintree --cov-report=term-missing --cov-report=html"
+test = "pytest -vv --cov=wintree --cov-report=term-missing --cov-report=html"
 release_patch = "poetry version patch && poetry build && poetry publish"
 release_minor = "poetry version minor && poetry build && poetry publish"
 release_major = "poetry version major && poetry build && poetry publish"

@@ -1,5 +1,7 @@
 # 📁🌳 wintree
 
+[![PyPI Downloads](https://static.pepy.tech/badge/wintree)](https://pepy.tech/projects/wintree)
+
 このライブラリは Windows 標準コマンドである`tree`コマンドの機能の少なさから生まれました。
 `wintree` は、指定したディレクトリの階層構造をツリー形式で表示する Python ライブラリです。コマンドラインから簡単に使用でき、絵文字による視覚的なツリー表示や除外対象のディレクトリ指定も可能です。
 ツリー構造を JSON で出力することで GUI アプリケーションにも活用できます。

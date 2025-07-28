@@ -1,5 +1,7 @@
 # 📁🌳 wintree
 
+[![PyPI Downloads](https://static.pepy.tech/badge/wintree)](https://pepy.tech/projects/wintree)
+
 This library was born out of the limitations of the default Windows tree command.
 `wintree` is a Python library that displays the directory structure in a tree format for any specified path.
 It can be easily used from the command line and supports features like emoji-based visual tree rendering and directory exclusion.
